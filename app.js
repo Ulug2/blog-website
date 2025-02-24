@@ -14,9 +14,13 @@ const blogRoutes = require('./routes/blogRoutes');
 const app = express();
 
 // MongoDB connection URI
-const dbURI = 'mongodb+srv://ulugbek:6%40Sket6%4011@nodetutorial.iobfx.mongodb.net/node-tuts?retryWrites=true&w=majority&appName=nodetutorial';
+require('dotenv').config();
+
+const dbURI = process.env.DB_URI;
+const port = process.env.PORT || 3000;
+
 mongoose.connect(dbURI)
-    .then((result) => app.listen(3000)) // Start the server after successful connection
+    .then((result) => app.listen(port, () => console.log(`Server is running on port ${port}`))) // Start the server after successful connection
     .catch((err) => console.log(err));
 
 // Set the view engine to ejs
@@ -57,4 +61,5 @@ app.use('/blogs', blogRoutes);
 app.use((req, res) => {
     res.status(404).render('404' , {title: '404'}) // Render the 404 view for undefined routes
 });
+
 
